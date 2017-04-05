@@ -3,10 +3,9 @@
 /* Padding below the footer and lighter body text */
 
 body {
+  padding-top: 50px;
   padding-bottom: 40px;
-  color: #5a5a5a;
 }
-
 
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
@@ -60,6 +59,14 @@ body {
   height: 500px;
 }
 
+/* CUSTOMIZE THE JUMBOTRON
+-------------------------------------------- */
+
+.jumbotron {
+  height: 100vh;
+  margin-bottom: 60px;
+  color: #5a5a5a;
+}
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
