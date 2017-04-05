@@ -63,7 +63,7 @@ body {
 -------------------------------------------- */
 
 .jumbotron {
-  height: 100vh;
+  height: 100vh - 50px;
   margin-bottom: 60px;
   color: #5a5a5a;
 }
