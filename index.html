@@ -71,28 +71,28 @@
 				scene.add( light );
 
 				//water
-				var waterloader = new THREE.TextureLoader();
-				waterloader.setCrossOrigin( 'anonymous' );
-				waterNormals = waterloader.load( 'textures/waternormals.jpg' );
-				waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
-				water = new THREE.Water( renderer, camera, scene, {
-					textureWidth: 256,
-					textureHeight: 256,
-					waterNormals: waterNormals,
-					alpha: 	1.0,
-					sunDirection: light.position.clone().normalize(),
-					sunColor: 0xffffff,
-					waterColor: 0x001e0f,
-					distortionScale: 50.0
-				} );
-				mirrorMesh = new THREE.Mesh(
-					new THREE.PlaneBufferGeometry( worldWidth * 500, worldWidth * 500 ),
-					water.material
-				);
-				mirrorMesh.add( water );
-				mirrorMesh.rotation.x = - Math.PI * 0.5;
-				mirrorMesh.position.y = 100;
-				scene.add( mirrorMesh );
+				// var waterloader = new THREE.TextureLoader();
+				// waterloader.setCrossOrigin( 'anonymous' );
+				// waterNormals = waterloader.load( 'textures/waternormals.jpg' );
+				// waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+				// water = new THREE.Water( renderer, camera, scene, {
+				// 	textureWidth: 256,
+				// 	textureHeight: 256,
+				// 	waterNormals: waterNormals,
+				// 	alpha: 	1.0,
+				// 	sunDirection: light.position.clone().normalize(),
+				// 	sunColor: 0xffffff,
+				// 	waterColor: 0x001e0f,
+				// 	distortionScale: 50.0
+				// } );
+				// mirrorMesh = new THREE.Mesh(
+				// 	new THREE.PlaneBufferGeometry( worldWidth * 500, worldWidth * 500 ),
+				// 	water.material
+				// );
+				// mirrorMesh.add( water );
+				// mirrorMesh.rotation.x = - Math.PI * 0.5;
+				// mirrorMesh.position.y = 1000;
+				// scene.add( mirrorMesh );
 
 				//sky
 				sky = new THREE.Sky();
@@ -105,7 +105,6 @@
 				sunSphere.position.y = - 700000;
 				sunSphere.visible = false;
 				scene.add( sunSphere );
-
 
 				data = generateHeight( worldWidth, worldDepth );
 				camera.position.y = data[ worldHalfWidth + worldHalfDepth * worldWidth ] * 10 + 500;
