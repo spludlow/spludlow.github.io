@@ -27,7 +27,6 @@
 	<body>
 		<script src="build/three.js"></script>
 
-		<script src="js/controls/FirstPersonControls.js"></script>
 		<script src="js/controls/OrbitControls.js"></script>
 		
 		<script src="js/Mirror.js"></script>
@@ -44,8 +43,20 @@
 			var container;
 			var camera, controls, scene, renderer;
 			var sky, sunSphere;
+
+			var parameters = {
+				width: 2000,
+				height: 2000,
+				widthSegments: 250,
+				heightSegments: 250,
+				depth: 1500,
+				param: 4,
+				filterparam: 1
+			};
+
 			init();
 			render();
+
 			function initSky() {
 				// Add Sky Mesh
 				sky = new THREE.Sky();
@@ -97,6 +108,32 @@
 				gui.add( effectController, "sun" ).onChange( guiChanged );
 				guiChanged();
 			}
+			function initWater(){
+				var light = new THREE.DirectionalLight( 0xffffbb, 1 );
+				light.position.set( - 1, 1, - 1 );
+				scene.add( light );
+
+				waterNormals = new THREE.TextureLoader().load( 'textures/waternormals.jpg' );
+				waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+				water = new THREE.Water( renderer, camera, scene, {
+					textureWidth: 512,
+					textureHeight: 512,
+					waterNormals: waterNormals,
+					alpha: 	1.0,
+					sunDirection: light.position.clone().normalize(),
+					sunColor: 0xffffff,
+					waterColor: 0x001e0f,
+					distortionScale: 50.0
+				} );
+				mirrorMesh = new THREE.Mesh(
+					new THREE.PlaneBufferGeometry( parameters.width * 500, parameters.height * 500 ),
+					water.material
+				);
+				mirrorMesh.add( water );
+				mirrorMesh.rotation.x = - Math.PI * 0.5;
+				scene.add( mirrorMesh );
+
+			}
 			function init() {
 				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 100, 2000000 );
 				camera.position.set( 0, 100, 2000 );
@@ -111,9 +148,10 @@
 				controls = new THREE.OrbitControls( camera, renderer.domElement );
 				controls.addEventListener( 'change', render );
 				//controls.maxPolarAngle = Math.PI / 2;
-				controls.enableZoom = false;
-				controls.enablePan = false;
+				//controls.enableZoom = false;
+				//controls.enablePan = false;
 				initSky();
+				initWater();
 				window.addEventListener( 'resize', onWindowResize, false );
 			}
 			function onWindowResize() {
@@ -123,6 +161,9 @@
 				render();
 			}
 			function render() {
+				water.material.uniforms.time.value += 1.0 / 60.0;
+				controls.update();
+				water.render();
 				renderer.render( scene, camera );
 			}
 
