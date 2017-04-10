@@ -113,6 +113,8 @@
 				light.position.set( - 1, 1, - 1 );
 				scene.add( light );
 
+				var waterloader = new THREE.TextureLoader();
+				waterloader.setCrossOrigin('anonymous');
 				waterNormals = new THREE.TextureLoader().load( 'textures/waternormals.jpg' );
 				waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 				water = new THREE.Water( renderer, camera, scene, {
