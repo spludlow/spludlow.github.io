@@ -31,6 +31,7 @@
 		<script src="build/three.js"></script>
 
 		<script src="js/controls/FirstPersonControls.js"></script>
+
 		<script src="js/Mirror.js"></script>
 		<script src="js/WaterShader.js"></script>
 		<script src="js/SkyShader.js"></script>
@@ -109,7 +110,9 @@
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
-				controls = new THREE.OrbitControls( camera, renderer.domElement );
+				controls = new THREE.FirstPersonControls( camera );
+				controls.movementSpeed = 1000;
+				controls.lookSpeed = 0.1;
 				controls.addEventListener( 'change', render );
 				//controls.maxPolarAngle = Math.PI / 2;
 				controls.enableZoom = false;
