@@ -86,6 +86,166 @@
     <!-- Theme JavaScript -->
     <script src="js/agency.min.js"></script>
     <script>
+        // create an array with nodes
+        //id should be numerical rgb so unique and findable
+        //value is the number of that colour
+        var timeOut;
+        var nodeIds = [];
+        var nodes = new vis.DataSet([
+            //{id: 1, color: 'rgba(120,32,14,1)', value: 1},
+        ]);
+
+        // create an array with edges
+        // value should be number of commonality/connections
+        var edges = new vis.DataSet([
+            //{from: 1, to: 3, value:1},
+        ]);
+
+        // create a network
+        var container = document.getElementById('mynetwork');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            edges: {
+                smooth: {
+                    type: 'continuous'
+                }
+            },
+            physics: {
+                stabilization: false
+            }
+        };
+        var network = new vis.Network(container, data, options);
+
+        var i;
+        var iLength;
+        var xyObj;
+
+        //image stuff
+        var canvas = document.getElementById('image-canvas');
+        var ctx = canvas.getContext('2d');
+        var pixelArray = [];
+        var imgWidth = 0;
+        var imgHeight = 0;
+        //synth
+        var synth = new Tone.Synth().toMaster();
+
+        // Trigger the imageLoader function when a file has been selected
+        var fileInput = document.getElementById('fileInput');
+        fileInput.addEventListener('change', imageLoader, false);
+
+        function imageLoader() {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                img = new Image();
+                img.onload = function () {
+                    ctx.drawImage(img, 0, 0, img.width,    img.height,     // source rectangle
+                        0, 0, canvas.width, canvas.height); // destination rectangle
+                    imgWidth = canvas.width;
+                    imgHeight = canvas.height;
+
+                    createEdges(imgWidth, imgHeight);
+                    beginReading();
+                };
+                img.src = reader.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+
+        function createEdges(width, height) {
+            var edgeArray = [];
+            var xRange = _.range(_.toInteger(width));
+            var yRange = _.range(_.toInteger(height));
+            _.map(xRange, function (x) {
+                pixelArray.push(yRange);
+                var y;
+                for(y = 0;  y<height; y++) {
+                    var from = '' + x + ',' + y;
+                    if (x !== width) {
+                        edgeArray.push({from: from, to: '' + (x + 1) + ',' + y});
+                    }
+                    if (y !== height) {
+                        edgeArray.push({from: from, to: '' + x + ',' + (y + 1)});
+                    }
+                }
+            });
+            edges.add(edgeArray);
+        }
+
+        function beginReading() {
+            iLength = Math.pow(_.max([imgWidth, imgHeight]),2);
+            i = 0;
+            xyObj = {
+                xCen: imgWidth/2,
+                yCen: imgWidth/2,
+                x: 0,
+                y: 0,
+                dx: 0,
+                dy: -1
+            };
+            readPixel(i, iLength, xyObj);
+        }
+
+        function readPixel(i, iLength, xyObj) {
+            if (i< iLength) {
+
+                if((-imgWidth/2 <= xyObj.x <= imgWidth/2)&&(-imgHeight/2 <= xyObj.y <= imgHeight)){
+                    var pixelData = ctx.getImageData(xyObj.x+xyObj.xCen, xyObj.y+xyObj.yCen, 1, 1).data;
+                    var rgba = 'rgba('
+                        + (Math.round(pixelData[0] / 10) * 10) + ','
+                        + (Math.round(pixelData[1] / 10) * 10) + ','
+                        + (Math.round(pixelData[2] / 10) * 10) + ', 1)';
+                    var nodeId = '' + (xyObj.x+xyObj.xCen) + ',' + (xyObj.y+xyObj.yCen);
+
+                    nodes.add({id: nodeId, color: rgba});//added temp node
+                    //get connected edges
+                    var nodeEdges = edges.get({
+                        filter: function (edge) {
+                            return (edge.from == nodeId || edge.to == nodeId);
+                        }
+                    });
+                    _.forEach(nodeEdges, function(edge){
+                        if(edge.from === nodeId){
+                            edges.update({id: edge.id, from: rgba, to: edge.to});
+                        }
+                        if(edge.to === nodeId){
+                            edges.update({id: edge.id, from: edge.from, to: rgba});
+                        }
+                    });
+                    nodes.remove(nodeId);
+
+                    if(nodes.get(rgba)){ //already a node of that colour
+                        var nodeVal = nodes.get(rgba).value;
+                        nodes.update({id: rgba, color: rgba, value: nodeVal+5});
+                        edges.remove(edges.get({
+                            filter: function (edge){
+                                return (edge.from === rgba && edge.to === rgba);
+                            }
+                        }));
+                    } else { //no new node
+                        nodes.add({id: rgba, color: rgba});
+                        console.log(synth);
+                        synth.triggerAttachRelease("C4", "8n");
+                    }
+                    nodeIds.push(rgba);
+                    network.redraw();
+                }
+                if((xyObj.x == xyObj.y)||
+                    (xyObj.x < 0 && xyObj.x == -xyObj.y)||
+                    (xyObj.x > 0 && xyObj.x == 1-xyObj.y)){
+                    var temp = xyObj.dx;
+                    xyObj.dx = -xyObj.dy;
+                    xyObj.dy = temp;
+                }
+                xyObj.x += xyObj.dx;
+                xyObj.y += xyObj.dy;
+            }
+            i++;
+        timeOut = setTimeout(readPixel.bind(null, i, iLength, xyObj), 50);
+        }
+
     </script>
 
 </body>
