@@ -123,14 +123,15 @@
         var iLength;
         var xyObj;
 
+        //synth
+        var synth = new Tone.Synth().toMaster();
+
         //image stuff
         var canvas = document.getElementById('image-canvas');
         var ctx = canvas.getContext('2d');
         var pixelArray = [];
         var imgWidth = 0;
         var imgHeight = 0;
-        //synth
-        var synth = new Tone.Synth().toMaster();
 
         // Trigger the imageLoader function when a file has been selected
         var fileInput = document.getElementById('fileInput');
@@ -247,5 +248,11 @@
         }
 
     </script>
+     <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>   
 
 </body>
