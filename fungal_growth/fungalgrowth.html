@@ -46,7 +46,6 @@
             border: 1px solid #444444;
         }
         #info {
-				position: absolute;
 				top: 5px; left: 5px;
 				width: 40px; height:56px;
 			}
@@ -69,14 +68,14 @@
         <div class="col-md-1">
 	        <div id="info">
                 <a href="../#portfolio"><i class="fa fa-chevron-left fa-3x" aria-hidden="true"></i></a>
-	    </div>
+	        </div>
         </div>
         <div class="col-md-8">
             <div id="mynetwork"></div>
         </div>
         <div class="col-md-3">
             <div class="row">
-                <input class="btn btn-default" type="button" value="Choose Image" id="fileInput" name="imageLoader"/>
+                <input class="btn btn-default" type="file" value="Choose Image" id="fileInput" name="imageLoader"/>
             </div>
             <div class="row">
                 <canvas id="image-canvas" width="50" height="50"></canvas>
