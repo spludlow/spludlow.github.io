@@ -37,7 +37,7 @@
         }
 
         #mynetwork {
-            width: 1000px;
+            width: 100%;
             height: 600px;
             border: 1px solid #444444;
             background-color: #222222;
@@ -65,10 +65,21 @@
 </head>
 
 <body>
-    <div id="mynetwork"></div>
-    <input type="file" id="fileInput" name="imageLoader"/>
-    <canvas id="image-canvas" width="50" height="50"></canvas>
-	</div>
+    <div class="row">
+        <div class="col-md-8">
+            <div id="mynetwork"></div>
+        </div>
+        <div class="row">
+            <div class= "col-md-4">
+                <input class="btn btn-default" type="file" value="Choose Image" id="fileInput" name="imageLoader"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class= "col-md-4">
+                <canvas id="image-canvas" width="50" height="50"></canvas>
+            </div>
+        </div>
+    </div>
 	<div id="info">
         <a href="../#portfolio"><i class="fa fa-chevron-left fa-3x" aria-hidden="true"></i></a>
 	</div>
@@ -227,7 +238,7 @@
                         }));
                     } else { //no new node
                         nodes.add({id: rgba, color: rgba});
-                        
+
                         var freq = (Math.round(pixelData[0] / 10) * 10)
                         + (Math.round(pixelData[1] / 10) * 10)
                         + (Math.round(pixelData[2] / 10) * 10)
