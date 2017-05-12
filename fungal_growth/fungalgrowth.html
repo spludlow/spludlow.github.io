@@ -64,6 +64,7 @@
 </head>
 
 <body>
+    <hr/>
     <div class="row">
         <div class="col-md-1">
 	        <div id="info">
@@ -75,7 +76,17 @@
         </div>
         <div class="col-md-3">
             <div class="row">
-                <input class="btn btn-default" type="file" value="Choose Image" id="fileInput" name="imageLoader"/>
+                <input class="btn btn-default btn-block" type="file" value="Choose Image" name="imageLoader"/>
+            </div>
+            <div class ="row">
+                <div class="input-group">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary">
+                            Choose Image File <input type="file" style="display: none;" id="fileInput">
+                        </span>
+                    </label>
+                    <input type="text" class="form-control" readonly>
+                </div>
             </div>
             <div class="row">
                 <canvas id="image-canvas" width="50" height="50"></canvas>
@@ -150,6 +161,8 @@
         function imageLoader() {
             var reader = new FileReader();
             reader.onload = function (event) {
+                var input = fileInput.parents('.input-group').find(':text'),
+                log = numFiles > 1 ? numFiles + ' files selected' : label;
                 img = new Image();
                 img.onload = function () {
                     ctx.drawImage(img, 0, 0, img.width,    img.height,     // source rectangle
@@ -164,7 +177,7 @@
             };
             reader.readAsDataURL(fileInput.files[0]);
         }
-
+        
         function createEdges(width, height) {
             var edgeArray = [];
             var xRange = _.range(_.toInteger(width));
