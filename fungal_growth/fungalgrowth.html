@@ -227,7 +227,20 @@
                         }));
                     } else { //no new node
                         nodes.add({id: rgba, color: rgba});
-                        synth.triggerAttackRelease("C4", "8n");
+                        
+                        var freq = (Math.round(pixelData[0] / 10) * 10)
+                        + (Math.round(pixelData[1] / 10) * 10)
+                        + (Math.round(pixelData[2] / 10) * 10)
+                        outMax = 0;
+                        outMin = 179;
+
+                        inMax = 750;
+                        inMin = 3;
+
+                        percent = (freq - inMin) / (inMax - inMin);
+                        output = percent * (outMax - outMin) + outMin;
+                        synth.triggerAttackRelease(Tone.Frequency(output,"midi").toNote(), "8n");
+
                     }
                     nodeIds.push(rgba);
                     console.log('redraw');
