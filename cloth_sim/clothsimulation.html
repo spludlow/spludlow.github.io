@@ -74,15 +74,9 @@
                 light.shadow.camera.far = 1000      // default x2 
 
 				// cloth material
-				var loader = new THREE.TextureLoader();
-				var clothTexture = loader.load( 'textures/patterns/circuit_pattern.png' );
-				clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
-				clothTexture.anisotropy = 16;
 				var clothMaterial = new THREE.MeshPhongMaterial( {
 					specular: 0x030303,
-					map: clothTexture,
-					side: THREE.DoubleSide,
-					alphaTest: 0.5
+					side: THREE.DoubleSide
 				} );
 				// cloth geometry
 				clothGeometry = new THREE.ParametricGeometry( clothFunction, cloth.w, cloth.h );
