@@ -105,38 +105,11 @@
     
       var data = canvas.toDataURL('image/png');
       photo.setAttribute('src', data);
-      saveViaAJAX();
+      processImage();
     } else {
       clearphoto();
     }
   }
-
-  function saveViaAJAX()
-{
-    console.log('save');
-	var canvasData = canvas.toDataURL("image/png");
-	var postData = "canvasData="+canvasData;
-
-	var ajax = new XMLHttpRequest();
-	ajax.open("POST",'testSave.php',true);
-	ajax.setRequestHeader('Content-Type', 'canvas/upload');
-	//ajax.setRequestHeader('Content-TypeLength', postData.length);
-    console.log('ready');
-	ajax.onreadystatechange=function()
-  	{
-		if (ajax.readyState == 4)
-		{
-			//alert(ajax.responseText);
-			// Write out the filename.
-            sourceImageUrl = ajax.responseText;
-            console.log(sourceImageUrl);
-            processImage();
-		}
-  	}
-
-	ajax.send(postData);
-    console.log('fin');
-}
 
   function processImage() {
         // **********************************************
@@ -164,6 +137,7 @@
         };
 
         // Display the image.
+        sourceImageUrl = photo.src;
         console.log(sourceImageUrl);
         document.querySelector("#photo").src = sourceImageUrl;
 
@@ -180,7 +154,7 @@
             type: "POST",
 
             // Request body.
-            data: '{"url": ' + '"' + sourceImageUrl + '"}',
+            data: '{' + '"' + sourceImageUrl + '"}',
         })
 
         .done(function(data) {
