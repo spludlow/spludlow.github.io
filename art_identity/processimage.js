@@ -113,6 +113,7 @@
 
   function saveViaAJAX()
 {
+    console.log('save');
 	var canvasData = canvas.toDataURL("image/png");
 	var postData = "canvasData="+canvasData;
 
@@ -120,8 +121,7 @@
 	ajax.open("POST",'testSave.php',true);
 	ajax.setRequestHeader('Content-Type', 'canvas/upload');
 	//ajax.setRequestHeader('Content-TypeLength', postData.length);
-
-
+    console.log('ready');
 	ajax.onreadystatechange=function()
   	{
 		if (ajax.readyState == 4)
@@ -135,6 +135,7 @@
   	}
 
 	ajax.send(postData);
+    console.log('fin');
 }
 
   function processImage() {
