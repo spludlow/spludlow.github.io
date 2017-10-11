@@ -3,8 +3,8 @@
   // width to the value defined here, but the height will be
   // calculated based on the aspect ratio of the input stream.
 
-  var width = 320;    // We will scale the photo width to this
-  var height = 0;     // This will be computed based on the input stream
+  var width = 1367;    // We will scale the photo width to this 1280
+  var height = 800;     // This will be computed based on the input stream
 
   // |streaming| indicates whether or not we're currently streaming
   // video from the camera. Obviously, we start at false.
@@ -59,9 +59,11 @@
         // the video, so we will make assumptions if this happens.
       
         if (isNaN(height)) {
-          height = width / (4/3);
+          //height = width / (4/3);
+          //height = width / (3/2);
+          height = 500;
         }
-      
+        height = 910;
         video.setAttribute('width', width);
         video.setAttribute('height', height);
         canvas.setAttribute('width', width);
@@ -70,10 +72,13 @@
       }
     }, false);
 
-    startbutton.addEventListener('click', function(ev){
-      takepicture();
-      ev.preventDefault();
-    }, false);
+    // startbutton.addEventListener('click', function(ev){
+    //   takepicture();
+    //   ev.preventDefault();
+    // }, false);
+    $(document).click(function() {
+    takepicture();
+});
     
     clearphoto();
   }
@@ -111,6 +116,28 @@
     }
   }
 
+  function makeblob(dataURL) {
+            var BASE64_MARKER = ';base64,';
+            if (dataURL.indexOf(BASE64_MARKER) == -1) {
+                var parts = dataURL.split(',');
+                var contentType = parts[0].split(':')[1];
+                var raw = decodeURIComponent(parts[1]);
+                return new Blob([raw], { type: contentType });
+            }
+            var parts = dataURL.split(BASE64_MARKER);
+            var contentType = parts[0].split(':')[1];
+            var raw = window.atob(parts[1]);
+            var rawLength = raw.length;
+
+            var uInt8Array = new Uint8Array(rawLength);
+
+            for (var i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+
+            return new Blob([uInt8Array], { type: contentType });
+        }
+
   function processImage() {
         // **********************************************
         // *** Update or verify the following values. ***
@@ -132,14 +159,13 @@
         // Request parameters.
         var params = {
             "returnFaceId": "true",
-            "returnFaceLandmarks": "false",
-            "returnFaceAttributes": "age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise",
+            "returnFaceLandmarks": "true",
+            //"returnFaceAttributes": "age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise",
         };
 
         // Display the image.
-        sourceImageUrl = photo.src;
-        console.log(sourceImageUrl);
-        document.querySelector("#photo").src = sourceImageUrl;
+        sourceImageUrl = canvas.toDataURL('image/png');
+        var blob = makeblob(sourceImageUrl);
 
         // Perform the REST API call.
         $.ajax({
@@ -147,19 +173,20 @@
 
             // Request headers.
             beforeSend: function(xhrObj){
-                xhrObj.setRequestHeader("Content-Type","application/json");
+                xhrObj.setRequestHeader("Content-Type","application/octet-stream");
                 xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
             },
 
             type: "POST",
-
+            processData: false,
             // Request body.
-            data: '{' + '"' + sourceImageUrl + '"}',
+            data: blob,
         })
 
         .done(function(data) {
             // Show formatted JSON on webpage.
             $("#responseTextArea").val(JSON.stringify(data, null, 2));
+            blurrface(data);
         })
 
         .fail(function(jqXHR, textStatus, errorThrown) {
@@ -171,6 +198,64 @@
         });
     }
 
+    function blurrface(data) {
+        for(var i = 0; i < data.length; i++)
+        {
+            var face = data[i];
+            var rect = face.faceRectangle;
+            var landmarks = face.faceLandmarks;
+            var ctx = canvas.getContext('2d');
+            var canvasColor = ctx.getImageData(landmarks.noseTip.x, landmarks.noseTip.y, 1,1); // rgba e [0,255]
+            var pixels = canvasColor.data;
+            var rgb = pixels[0]+','+ pixels[1]+','+pixels[2]+',0.5';
+
+            var leftEyeX = landmarks.eyebrowLeftOuter.x;
+            var leftEyeY = landmarks.eyeLeftTop.y;
+            var leftEyeHeight = landmarks.eyeLeftBottom.y - leftEyeY;
+            var leftEyeWidth = landmarks.eyebrowLeftInner.x - leftEyeX;
+            getBlurredBG(rgb,'leftEye', leftEyeX-30, leftEyeY-50, leftEyeWidth+80, leftEyeHeight+115);
+            
+            var rightEyeX = landmarks.eyebrowRightInner.x;
+            var rightEyeY = landmarks.eyeRightTop.y;
+            var rightEyeHeight = landmarks.eyeRightBottom.y - rightEyeY;
+            var rightEyeWidth = landmarks.eyebrowRightOuter.x - rightEyeX;
+            getBlurredBG(rgb,'rightEye', rightEyeX-30, rightEyeY-50, rightEyeWidth+80, rightEyeHeight+115);
+
+            var mouthX = landmarks.mouthLeft.x-50;
+            var mouthY = landmarks.upperLipTop.y-50;
+            var mouthHeight = landmarks.underLipBottom.y - mouthY+50;
+            var mouthWidth = landmarks.mouthRight.x - mouthX+50;
+            getBlurredBG(rgb,'mouth', mouthX, mouthY-5, mouthWidth, mouthHeight+15);
+
+            var noseX = landmarks.noseLeftAlarOutTip.x-25;
+            var noseY = (landmarks.noseRootLeft.y+landmarks.noseRootRight.y)/2;
+            var noseHeight = landmarks.noseTip.y+50 - noseY;
+            var noseWidth = landmarks.noseRightAlarOutTip.x - noseX+50;
+            getBlurredBG(rgb,'nose', noseX, noseY, noseWidth, noseHeight);
+        }
+}
+
+function getBlurredBG(rgb,id, x, y, w, h) {
+
+  var ocanvas = document.getElementById(id);
+    //create new canvas to enable clipping
+    ocanvas.width = w;
+    ocanvas.height = h;
+    ocanvas.style.left = x+ 'px';
+    ocanvas.style.top = y+10+ 'px';
+
+    var ctx = ocanvas.getContext('2d');
+    var copy = document.getElementById('photocopy');
+    ctx.drawImage(copy, x, y, w, h, 0, 0, w, h);
+    //stackBlurCanvasRGB(id, 0, 0, w, h, 24);
+
+    ctx.fillStyle = 'rgba('+rgb+')';
+    ctx.fillRect(0, 0, w, h);
+    ocanvas.style.filter = 'blur(20px)';
+    
+    var data = canvas.toDataURL('image/png');
+    photocopy.setAttribute('src', data);
+}
   // Set up our event listener to run the startup process
   // once loading is complete.
   window.addEventListener('load', startup, false);
