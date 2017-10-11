@@ -12,31 +12,10 @@
 		<script src="js/Detector.js"></script>
 		<script src="js/controls/OrbitControls.js"></script>
 
-		<script src="js/Cloth.js"></script>
-
-		<script type="x-shader/x-fragment" id="fragmentShaderDepth">
-			#include <packing>
-			uniform sampler2D texture;
-			varying vec2 vUV;
-			void main() {
-				vec4 pixel = texture2D( texture, vUV );
-				if ( pixel.a < 0.5 ) discard;
-				gl_FragData[ 0 ] = packDepthToRGBA( gl_FragCoord.z );
-			}
-		</script>
-
-		<script type="x-shader/x-vertex" id="vertexShaderDepth">
-			varying vec2 vUV;
-			void main() {
-				vUV = 0.75 * uv;
-				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-				gl_Position = projectionMatrix * mvPosition;
-			}
-		</script>
+		<script src="js/ClothSim.js"></script>
 
 		<script>
 			/* testing cloth simulation */
-			pins = [ 0, cloth.w ]; // classic 2 pins
 			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 			var container;
 			var camera, scene, renderer;
@@ -49,8 +28,6 @@
 				document.body.appendChild( container );
 				// scene
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xcce0ff );
-				scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
 				// camera
 				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.x = 1000;
@@ -72,36 +49,38 @@
                 light.shadow.mapSize.height = 1024; // default x2
                 light.shadow.camera.near = 1;       // default x2
                 light.shadow.camera.far = 1000      // default x2 
+                
+                //adjust shadow camera to get proper shadows
+				var d = 300;
+				light.shadow.camera.left = - d;
+				light.shadow.camera.right = d;
+				light.shadow.camera.top = d;
+				light.shadow.camera.bottom = - d;
 
 				// cloth material
 				var clothMaterial = new THREE.MeshPhongMaterial( {
+                    color: 0x99cccc,
 					specular: 0x030303,
 					side: THREE.DoubleSide
 				} );
 				// cloth geometry
 				clothGeometry = new THREE.ParametricGeometry( clothFunction, cloth.w, cloth.h );
 				clothGeometry.dynamic = true;
-				var uniforms = { texture:  { value: clothTexture } };
-				var vertexShader = document.getElementById( 'vertexShaderDepth' ).textContent;
-				var fragmentShader = document.getElementById( 'fragmentShaderDepth' ).textContent;
 				// cloth mesh
 				object = new THREE.Mesh( clothGeometry, clothMaterial );
 				object.position.set( 0, 0, 0 );
 				object.castShadow = true;
 				scene.add( object );
-				object.customDepthMaterial = new THREE.ShaderMaterial( {
-					uniforms: uniforms,
-					vertexShader: vertexShader,
-					fragmentShader: fragmentShader,
-					side: THREE.DoubleSide
-				} );
 				// ground
-                var geometry = new THREE.PlaneBufferGeometry( 5, 20, 32 );
-                var groundmaterial = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-                var ground = new THREE.Mesh( geometry, material );
+                var geometry = new THREE.PlaneBufferGeometry( 1000, 1000, 32 );
+                var groundMaterial = new THREE.MeshPhongMaterial( { 
+                    color: 0x999999, 
+                    specular: 0x111111 
+                } );
+                var ground = new THREE.Mesh( geometry, groundMaterial );
                 ground.position.y = -250;
                 ground.receiveShadow = true;
-				//mesh.rotation.x = - Math.PI / 2;
+				ground.rotation.x = - Math.PI / 2;
                 scene.add( ground );
 				
 				// renderer
@@ -133,7 +112,6 @@
 				windForce.multiplyScalar( windStrength );
 				simulate( time );
 				render();
-				stats.update();
 			}
 			function render() {
 				var p = cloth.particles;

@@ -1,22 +1,10 @@
-/*
- * Cloth Simulation using a relaxed constraints solver
- */
-
-// Suggested Readings
-
-// Advanced Character Physics by Thomas Jakobsen Character
-// http://freespace.virgin.net/hugo.elias/models/m_cloth.htm
-// http://en.wikipedia.org/wiki/Cloth_modeling
-// http://cg.alexandra.dk/tag/spring-mass-system/
-// Real-time Cloth Animation http://www.darwin3d.com/gamedev/articles/col0599.pdf
-
 var DAMPING = 0.03;
 var DRAG = 1 - DAMPING;
 var MASS = 0.1;
 var restDistance = 25;
 
-var xSegs = 10;
-var ySegs = 10;
+var xSegs = 15;
+var ySegs = 15;
 
 var clothFunction = plane( restDistance * xSegs, restDistance * ySegs );
 
@@ -29,15 +17,12 @@ var gravity = new THREE.Vector3( 0, - GRAVITY, 0 ).multiplyScalar( MASS );
 var TIMESTEP = 18 / 1000;
 var TIMESTEP_SQ = TIMESTEP * TIMESTEP;
 
-var pins = [];
+var pins = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ,15];
 
 
 var wind = true;
 var windStrength = 2;
 var windForce = new THREE.Vector3( 0, 0, 0 );
-
-var ballPosition = new THREE.Vector3( 0, - 45, 0 );
-var ballSize = 60; //40
 
 var tmpForce = new THREE.Vector3();
 
@@ -275,31 +260,6 @@ function simulate( time ) {
 		satisfyConstraints( constraint[ 0 ], constraint[ 1 ], constraint[ 2 ] );
 
 	}
-
-	// Ball Constraints
-
-	ballPosition.z = - Math.sin( Date.now() / 600 ) * 90 ; //+ 40;
-	ballPosition.x = Math.cos( Date.now() / 400 ) * 70;
-
-	if ( sphere.visible ) {
-
-		for ( particles = cloth.particles, i = 0, il = particles.length; i < il; i ++ ) {
-
-			particle = particles[ i ];
-			var pos = particle.position;
-			diff.subVectors( pos, ballPosition );
-			if ( diff.length() < ballSize ) {
-
-				// collided
-				diff.normalize().multiplyScalar( ballSize );
-				pos.copy( ballPosition ).add( diff );
-
-			}
-
-		}
-
-	}
-
 
 	// Floor Constraints
 
