@@ -113,29 +113,28 @@
 
   function saveViaAJAX()
 {
-    console.log('saving');
-	// var canvasData = canvas.toDataURL("image/png");
-	// var postData = "canvasData="+canvasData;
+	var canvasData = canvas.toDataURL("image/png");
+	var postData = "canvasData="+canvasData;
 
-	// var ajax = new XMLHttpRequest();
-	// ajax.open("POST",'testSave.php',true);
-	// ajax.setRequestHeader('Content-Type', 'canvas/upload');
-	// //ajax.setRequestHeader('Content-TypeLength', postData.length);
+	var ajax = new XMLHttpRequest();
+	ajax.open("POST",'testSave.php',true);
+	ajax.setRequestHeader('Content-Type', 'canvas/upload');
+	//ajax.setRequestHeader('Content-TypeLength', postData.length);
 
 
-	// ajax.onreadystatechange=function()
-  	// {
-	// 	if (ajax.readyState == 4)
-	// 	{
-	// 		//alert(ajax.responseText);
-	// 		// Write out the filename.
-    //         sourceImageUrl = ajax.responseText;
-    //         console.log(sourceImageUrl);
-    //         processImage();
-	// 	}
-  	// }
+	ajax.onreadystatechange=function()
+  	{
+		if (ajax.readyState == 4)
+		{
+			//alert(ajax.responseText);
+			// Write out the filename.
+            sourceImageUrl = ajax.responseText;
+            console.log(sourceImageUrl);
+            processImage();
+		}
+  	}
 
-	// ajax.send(postData);
+	ajax.send(postData);
 }
 
   function processImage() {
