@@ -30,7 +30,6 @@ body {
 }
 
 .header {
-  background-image: url("./img/colours.jpg");
   background-color: #cccccc;
   height: 100vh;
   background-position: center;
@@ -160,6 +159,7 @@ body {
 
 /* SKILLS STUFF */
 .section-heading {
+  padding-top: 20px;
   font-weight: 300;
   width: 100%;
   text-align: center;
