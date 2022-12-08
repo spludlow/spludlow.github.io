@@ -3,6 +3,7 @@ import './App.css';
 import About from './components/About';
 import Header from './components/Header';
 import Naivgation from './components/Navigation';
+import Skills from './components/Skills';
 
 const theme = createTheme({
   typography: {
@@ -62,6 +63,7 @@ function App() {
         <Naivgation>
           <Header />
           <About />
+          <Skills />
         </Naivgation>
       </div>
     </ThemeProvider>
