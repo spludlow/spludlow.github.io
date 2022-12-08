@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import {
     AppBar,
     Box,
@@ -17,8 +16,9 @@ import {
     useScrollTrigger,
     Slide
 } from '@mui/material';
-
 import MenuIcon from '@mui/icons-material/Menu';
+
+import Logo from '../../logo192.png';
 
 
 const drawerWidth = 240;
@@ -46,9 +46,15 @@ export default function Naivgation(props) {
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-                SL
-            </Typography>
+            <IconButton
+                color="primary"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ my: 2, ml: 0 }}
+            >
+                <img src={Logo} width="40" height="40" />
+            </IconButton>
             <Divider />
             <List>
                 {navItems.map((item) => (
@@ -71,7 +77,7 @@ export default function Naivgation(props) {
                 <AppBar component="nav">
                     <Toolbar>
                         <IconButton
-                            color="inherit"
+                            color="primary"
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
@@ -79,13 +85,19 @@ export default function Naivgation(props) {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography
-                            variant="h6"
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        <div
+                            style={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                         >
-                            SL
-                        </Typography>
+                            <IconButton
+                                color="primary"
+                                aria-label="open drawer"
+                                edge="start"
+                                onClick={handleDrawerToggle}
+                                sx={{ my: 2, ml: 0 }}
+                            >
+                                <img src={Logo} width="40" height="40" />
+                            </IconButton>
+                        </div>
                         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                             {navItems.map((item) => (
                                 <Button key={item} sx={{ color: '#fff' }}>
