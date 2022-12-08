@@ -6,11 +6,11 @@ import Skills from './components/Skills';
 function App() {
   const skillsRef = useRef(null);
 
-  const executeScroll = (ref) => ref.current.scrollIntoView({behaviour: 'smooth', block: 'end'});
+  const executeScroll = (ref) => ref.current.scrollIntoView({ behaviour: 'smooth', block: 'end' });
 
   return (
     <div className="App">
-      <Header executeScroll={() => executeScroll(skillsRef)}/>
+      <Header executeScroll={() => executeScroll(skillsRef)} />
       <Skills skillsRef={skillsRef} />
     </div>
   );
