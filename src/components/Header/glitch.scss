@@ -41,19 +41,7 @@ body {
     font-weight: 400;
     animation-delay: calc(var(--delay-anim) + var(--time-anim) * 0.25);
   }
-  
-.scroll-link {
-    position: absolute;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-.mouse {
-    max-width: 2.5rem;
-    width: 100%;
-    height: auto;
-  }
-  
+
   /* Animations */
   @keyframes glitch-text {
     0% {
