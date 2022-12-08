@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import './App.css';
 import Header from './components/Header';
+import Naivgation from './components/Navigation';
 import Skills from './components/Skills';
 
 function App() {
@@ -10,8 +11,10 @@ function App() {
 
   return (
     <div className="App">
-      <Header executeScroll={() => executeScroll(skillsRef)} />
-      <Skills skillsRef={skillsRef} />
+      <Naivgation>
+        <Header executeScroll={() => executeScroll(skillsRef)} />
+        <Skills skillsRef={skillsRef} />
+      </Naivgation>
     </div>
   );
 }
