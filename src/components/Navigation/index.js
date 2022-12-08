@@ -84,8 +84,8 @@ export default function Naivgation(props) {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <div
-                            style={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        <Box
+                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                         >
                             <IconButton
                                 color="primary"
@@ -96,7 +96,7 @@ export default function Naivgation(props) {
                             >
                                 <img src={Logo} width="40" height="40" alt="SL Design home" />
                             </IconButton>
-                        </div>
+                        </Box>
                         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                             {navItems.map((item) => (
                                 <Button key={item} sx={{ color: '#fff' }} href={`#${item}`}>
