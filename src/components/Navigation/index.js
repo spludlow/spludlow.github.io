@@ -11,7 +11,6 @@ import {
     ListItemButton,
     ListItemText,
     Toolbar,
-    Typography,
     Button,
     useScrollTrigger,
     Slide
@@ -22,7 +21,7 @@ import Logo from '../../logo192.png';
 
 
 const drawerWidth = 240;
-const navItems = ['Skills', 'Portfolio', 'Contact'];
+const navItems = ['About', 'Skills', 'Portfolio', 'Contact'];
 
 
 function HideOnScroll(props) {
@@ -50,16 +49,16 @@ export default function Naivgation(props) {
                 color="primary"
                 aria-label="open drawer"
                 edge="start"
-                onClick={handleDrawerToggle}
+                href="#Home"
                 sx={{ my: 2, ml: 0 }}
             >
-                <img src={Logo} width="40" height="40" />
+                <img src={Logo} width="40" height="40" alt="SL Design home" />
             </IconButton>
             <Divider />
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }}>
+                        <ListItemButton sx={{ textAlign: 'center' }} href={`#${item}`}>
                             <ListItemText primary={item} />
                         </ListItemButton>
                     </ListItem>
@@ -92,15 +91,15 @@ export default function Naivgation(props) {
                                 color="primary"
                                 aria-label="open drawer"
                                 edge="start"
-                                onClick={handleDrawerToggle}
+                                href="#Home"
                                 sx={{ my: 2, ml: 0 }}
                             >
-                                <img src={Logo} width="40" height="40" />
+                                <img src={Logo} width="40" height="40" alt="SL Design home" />
                             </IconButton>
                         </div>
                         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                             {navItems.map((item) => (
-                                <Button key={item} sx={{ color: '#fff' }}>
+                                <Button key={item} sx={{ color: '#fff' }} href={`#${item}`}>
                                     {item}
                                 </Button>
                             ))}

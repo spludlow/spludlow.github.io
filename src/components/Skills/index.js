@@ -1,8 +1,17 @@
 
-function Skills({ skillsRef }) {
+function Skills() {
+
+    // React
+    // JavaScript
+    // TypeScript
+    // Redux
+    // HTML
+    // CSS3
+    // Sass
+    // Git
 
     return (
-        <div ref={skillsRef} style={{ height: '500px' }}>
+        <div style={{ height: '500px' }}>
         </div>);
 }
 

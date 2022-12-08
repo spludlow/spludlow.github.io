@@ -1,16 +1,15 @@
 import { createTheme, ThemeProvider } from '@mui/material';
-import { useRef } from 'react';
 import './App.css';
+import About from './components/About';
 import Header from './components/Header';
 import Naivgation from './components/Navigation';
-import Skills from './components/Skills';
 
 const theme = createTheme({
   typography: {
     fontFamily: ['Montserrat']
   },
   palette: {
-    type: 'dark',
+    mode: 'dark',
     primary: {
       main: '#98fadf'
     },
@@ -22,7 +21,7 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#12192388',
+          backgroundColor: '#05051099',
         }
       }
     },
@@ -56,16 +55,13 @@ const theme = createTheme({
 });
 
 function App() {
-  const skillsRef = useRef(null);
-
-  const executeScroll = (ref) => ref.current.scrollIntoView({ behaviour: 'smooth', block: 'end' });
 
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
         <Naivgation>
-          <Header executeScroll={() => executeScroll(skillsRef)} />
-          <Skills skillsRef={skillsRef} />
+          <Header />
+          <About />
         </Naivgation>
       </div>
     </ThemeProvider>
