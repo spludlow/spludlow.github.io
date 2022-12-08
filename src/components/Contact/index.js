@@ -21,7 +21,7 @@ function Contact() {
                                 <code>Contact</code>
                             </Typography>
                             <Typography gutterBottom>
-                                Want to get in touch or do you have a cool project in mind? Just want to say hey?
+                                Want to get in touch or have a cool project in mind? Just want to say hey?
                             </Typography>
                             <Grid container sx={{ pt: 2 }} justifyContent="center">
                                 <Grid item xs={12} sm={6}>

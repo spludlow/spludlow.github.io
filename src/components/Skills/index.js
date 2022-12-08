@@ -2,15 +2,15 @@ import { Grid, Paper, Stack, Typography } from "@mui/material";
 
 import "./skills.scss";
 
-import ReactLogo from './react.png';
-import JavaScriptLogo from './javascript.png';
-import TypeScriptLogo from './typescript.png';
-import ReduxLogo from './redux.png';
-import HTMLLogo from './html5.png';
-import CSS3Logo from './css3.png';
-import SassLogo from './scss.png';
-import GitLogo from './git.png';
-import FigmaLogo from './figma.png';
+import ReactLogo from './Logos/react.png';
+import JavaScriptLogo from './Logos/javascript.png';
+import TypeScriptLogo from './Logos/typescript.png';
+import ReduxLogo from './Logos/redux.png';
+import HTMLLogo from './Logos/html5.png';
+import CSS3Logo from './Logos/css3.png';
+import SassLogo from './Logos/scss.png';
+import GitLogo from './Logos/git.png';
+import FigmaLogo from './Logos/figma.png';
 
 function Skills() {
 
