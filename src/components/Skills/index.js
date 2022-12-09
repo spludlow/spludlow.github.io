@@ -1,5 +1,6 @@
-import { Grid, Paper, Stack, Typography } from "@mui/material";
-
+import { Grid, Paper, Slide, Stack, Typography } from "@mui/material";
+import { useRef, useState } from "react";
+import VizSensor from 'react-visibility-sensor';
 import "./skills.scss";
 
 import ReactLogo from './Logos/react.png';
@@ -13,6 +14,8 @@ import GitLogo from './Logos/git.png';
 import FigmaLogo from './Logos/figma.png';
 
 function Skills() {
+    const [active, setActive] = useState(false);
+    const paperRef = useRef();
 
     const skillList = [
         { name: 'React', image: ReactLogo },
@@ -27,29 +30,37 @@ function Skills() {
     ];
 
     const renderSkill = (skill, index) => (
-        <Grid item key={skill.name + index}>
-            <Stack spacing={2} alignItems="center">
-                <img class="skillLogo" src={skill.image} alt={skill.name} width="75" height="75" />
-                <Typography>
-                    <code>{skill.name}</code>
-                </Typography>
-            </Stack>
-        </Grid>
+        <Slide direction="up" in={active} container={paperRef.current} style={{ transitionDelay: 100 * index }}>
+            <Grid item key={skill.name + index}>
+                <Stack spacing={2} alignItems="center">
+                    <img class="skillLogo" src={skill.image} alt={skill.name} width="75" height="75" />
+                    <Typography>
+                        <code>{skill.name}</code>
+                    </Typography>
+                </Stack>
+            </Grid>
+        </Slide>
     )
 
     return (
         <Grid container justifyContent="center" id="Skills">
             <Grid item xs={12}>
-                <Paper elevation={3} sx={{ p: 4 }}>
-                    <Typography variant="h4" gutterBottom textAlign="center" sx={{ mb: 4 }}>
-                        <code>Skills</code>
-                    </Typography>
+                <Paper elevation={3} sx={{ p: 4, overflow: 'hidden' }} ref={paperRef}>
+
+                    <VizSensor
+                        onChange={(isVisible) => {
+                            if (isVisible) setActive(isVisible);
+                        }}
+                    ><Typography variant="h4" gutterBottom textAlign="center" sx={{ mb: 4 }}>
+                            <code>Skills</code>
+                        </Typography>
+                    </VizSensor>
                     <Grid container spacing={8} justifyContent="center">
                         {skillList.map(renderSkill)}
                     </Grid>
                 </Paper>
             </Grid>
-        </Grid>);
+        </Grid >);
 }
 
 export default Skills;

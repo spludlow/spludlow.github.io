@@ -53,6 +53,13 @@ const theme = createTheme({
           }
         }
       }
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#0fc1cc80"
+        }
+      }
     }
   }
 });
