@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.55873776.css",
-    "main.js": "/static/js/main.e5a6f516.js",
+    "main.css": "/static/css/main.d341c767.css",
+    "main.js": "/static/js/main.3848842e.js",
     "static/js/787.12d31944.chunk.js": "/static/js/787.12d31944.chunk.js",
     "static/media/lodgelink home.PNG": "/static/media/lodgelink home.c5f445689898602ae41e.PNG",
     "static/media/G3-preview.png": "/static/media/G3-preview.4d678d7e3c61bf3991fb.png",
@@ -18,12 +18,12 @@
     "static/media/javascript.png": "/static/media/javascript.957b35620dae87ea3d4b.png",
     "static/media/logo192.png": "/static/media/logo192.8b3395ab79646856a85e.png",
     "index.html": "/index.html",
-    "main.55873776.css.map": "/static/css/main.55873776.css.map",
-    "main.e5a6f516.js.map": "/static/js/main.e5a6f516.js.map",
+    "main.d341c767.css.map": "/static/css/main.d341c767.css.map",
+    "main.3848842e.js.map": "/static/js/main.3848842e.js.map",
     "787.12d31944.chunk.js.map": "/static/js/787.12d31944.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.55873776.css",
-    "static/js/main.e5a6f516.js"
+    "static/css/main.d341c767.css",
+    "static/js/main.3848842e.js"
   ]
 }
